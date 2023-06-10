@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Estadísticas de pesos de alumnos</title>
+</head>
+<body>
+  <h1>Estadísticas de pesos de alumnos</h1>
+
+  <form id="formulario">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" required>
+    <label for="peso">Peso (kg):</label>
+    <input type="number" id="peso" required>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <div id="resultados"></div>
+
+  <script>
+    const alumnos = [];
+
+    function agregarAlumno(event) {
+      event.preventDefault();
+
+      const nombreInput = document.getElementById('nombre');
+      const pesoInput = document.getElementById('peso');
+
+      const nombre = nombreInput.value;
+      const peso = parseFloat(pesoInput.value);
+
+      if (nombre && peso) {
+        const alumno = { nombre, peso };
+        alumnos.push(alumno);
+
+        nombreInput.value = '';
+        pesoInput.value = '';
+
+        mostrarResultados();
+      }
+    }
+
+    function mostrarResultados() {
+      const menosDe40kg = alumnos.filter(alumno => alumno.peso < 40).length;
+      const entre40y50kg = alumnos.filter(alumno => alumno.peso >= 40 && alumno.peso < 50).length;
+      const entre50y60kg = alumnos.filter(alumno => alumno.peso >= 50 && alumno.peso < 60).length;
+      const masDe60kg = alumnos.filter(alumno => alumno.peso >= 60).length;
+
+      const resultados = document.getElementById('resultados');
+      resultados.innerHTML = `
+        <p>- Alumnos de menos de 40kg: ${menosDe40kg}</p>
+        <p>- Alumnos entre 40 y 50kg: ${entre40y50kg}</p>
+        <p>- Alumnos de más de 50kg y menos de 60kg: ${entre50y60kg}</p>
+        <p>- Alumnos de más o igual a 60kg: ${masDe60kg}</p>
+      `;
+    }
+
+    document.getElementById('formulario').addEventListener('submit', agregarAlumno);
+  </script>
+</body>
+</html>

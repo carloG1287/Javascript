@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interés de Cuenta de Ahorros</title>
+</head>
+<body>
+  <h1>Interés de Cuenta de Ahorros</h1>
+
+  <form id="formulario">
+    <label for="montoInicial">Monto Inicial (bs):</label>
+    <input type="number" id="montoInicial" required>
+    <label for="aportacionMensual">Aportación Mensual (bs):</label>
+    <input type="number" id="aportacionMensual" required>
+    <button type="submit">Calcular</button>
+  </form>
+
+  <div id="resultado"></div>
+
+  <script>
+    function calcularInteresCuentaAhorros(montoInicial, aportacionMensual) {
+      const tasaInteresMensual = 0.0125; // 1.25% mensual
+      let saldo = montoInicial;
+
+      for (let mes = 1; mes <= 12; mes++) {
+        saldo += aportacionMensual;
+        saldo += saldo * tasaInteresMensual;
+      }
+
+      return saldo;
+    }
+
+    function mostrarResultado(event) {
+      event.preventDefault();
+
+      const montoInicialInput = document.getElementById('montoInicial');
+      const aportacionMensualInput = document.getElementById('aportacionMensual');
+      const resultadoDiv = document.getElementById('resultado');
+
+      const montoInicial = parseFloat(montoInicialInput.value);
+      const aportacionMensual = parseFloat(aportacionMensualInput.value);
+
+      if (isNaN(montoInicial) || isNaN(aportacionMensual)) {
+        resultadoDiv.textContent = 'Por favor, ingresa valores numéricos válidos.';
+      } else {
+        const saldoFinal = calcularInteresCuentaAhorros(montoInicial, aportacionMensual);
+        resultadoDiv.textContent = 'El saldo final de la cuenta de ahorros a fin de año es: ' + saldoFinal.toFixed(2) + ' bs';
+      }
+    }
+
+    document.getElementById('formulario').addEventListener('submit', mostrarResultado);
+  </script>
+</body>
+</html>
